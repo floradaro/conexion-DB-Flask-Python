@@ -15,7 +15,8 @@ def get_db_connection():
 
 @app.route('/')
 def home():
-    cursor = db.database.cursor()
+    conn = get_db_connection()
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM users")
     myresult = cursor.fetchall()
     #vamos a convertir los datos a diccionario
@@ -34,7 +35,8 @@ def addUser():
     email = request.form.get('email')
 
     if fullname and phone and email:
-        cursor = db.database.cursor()
+        conn = get_db_connection()
+        cursor = conn.cursor()
         sql = "INSERT INTO users (fullname, phone, email) VALUES (%s, %s, %s)"
         data = (fullname, phone, email)
         cursor.execute(sql, data)
@@ -43,7 +45,8 @@ def addUser():
 
 @app.route('/delete/<string:id>')
 def delete(id):
-    cursor = db.database.cursor()
+    conn = get_db_connection()
+    cursor = conn.cursor()
     sql = "DELETE FROM users WHERE id=%s"
     data = (id,)
     cursor.execute(sql, data)
@@ -57,7 +60,8 @@ def edit(id):
     email = request.form.get('email')
 
     if fullname and phone and email:
-        cursor = db.database.cursor()
+        conn = get_db_connection()
+        cursor = conn.cursor()
         sql = "UPDATE users SET fullname =%s, phone= %s, email=%s WHERE id = %s"
         data = (fullname, phone, email, id)
         cursor.execute(sql, data)
