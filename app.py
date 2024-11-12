@@ -1,7 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
-import database as db
+import mysql.connector
 
 app = Flask(__name__)
+
+# Configura la conexión a la base de datos usando variables de entorno
+def get_db_connection():
+    return mysql.connector.connect(
+        host=os.environ.get('MYSQLHOST', 'railway.railway.internal'),  # Usamos 'MYSQLHOST' que es la variable de entorno para el host privado
+        user=os.environ.get('MYSQLUSER', 'root'),  # 'MYSQLUSER' contiene el usuario de la base de datos
+        password=os.environ.get('MYSQLPASSWORD', ''),  # 'MYSQLPASSWORD' contiene la contraseña
+        database=os.environ.get('MYSQLDATABASE', 'railway'),  # 'MYSQLDATABASE' contiene el nombre de la base de datos
+        port=int(os.environ.get('MYSQLPORT', 3306))
+    )
 
 @app.route('/')
 def home():

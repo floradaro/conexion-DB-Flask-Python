@@ -1,3 +1,4 @@
-Flask==3.0.3
-mysqlclient==2.0.0
-python-dotenv==1.0.1
+Flask
+mysqlclient
+python-dotenv
+mysql-connector-python
