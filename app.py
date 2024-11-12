@@ -1,18 +1,24 @@
+from flask import Flask, request, jsonify, render_template
 import os
-from flask import Flask, request, jsonify, render_template, redirect, url_for
 import mysql.connector
 
 app = Flask(__name__)
 
-# Configura la conexión a la base de datos usando variables de entorno
+# Configuración de la base de datos
+db_config = {
+    'user': 'root',
+    'password': 'gFnBMkOKsYoOlZbwNanXgUVKkmQkNrmU',
+    'host': 'mysql.railway.internal',
+    'database': 'railway'
+}
+
 def get_db_connection():
-    return mysql.connector.connect(
-        host=os.environ.get('MYSQLHOST', 'railway.railway.internal'),  # Usamos 'MYSQLHOST' que es la variable de entorno para el host privado
-        user=os.environ.get('MYSQLUSER', 'root'),  # 'MYSQLUSER' contiene el usuario de la base de datos
-        password=os.environ.get('MYSQLPASSWORD', ''),  # 'MYSQLPASSWORD' contiene la contraseña
-        database=os.environ.get('MYSQLDATABASE', 'railway'),  # 'MYSQLDATABASE' contiene el nombre de la base de datos
-        port=int(os.environ.get('MYSQLPORT', 3306))
-    )
+    conn = mysql.connector.connect(**db_config)
+    return conn
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/')
 def home():
@@ -77,5 +83,4 @@ def edit(id):
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    # Establece el host a 0.0.0.0 y el puerto utilizando la variable de entorno 'PORT'
-    app.run(debug=True, host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 3306)))
