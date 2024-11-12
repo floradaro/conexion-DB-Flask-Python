@@ -1,11 +1,12 @@
 import os
-import MySQLdb  # Asegúrate de tener este paquete instalado
+from flask_mysqldb import MySQL
 
-# Conexión a la base de datos usando las variables de entorno proporcionadas por Railway
-database = MySQLdb.connect(
-    host=os.getenv('MYSQLHOST', 'RAILWAY_PRIVATE_DOMAIN'),  # Host de la base de datos, por defecto usará el valor proporcionado
-    user=os.getenv('MYSQLUSER', 'root'),  # Usuario de la base de datos, por defecto 'root'
-    password=os.getenv('MYSQLPASSWORD', 'WMMsvicfJAYUoModynwlhAgjtbWkOaKt'),  # Contraseña proporcionada por Railway
-    database=os.getenv('MYSQLDATABASE', 'railway'),  # Nombre de la base de datos proporcionado por Railway
-    port=int(os.getenv('MYSQLPORT', 3306))  # Puerto de la base de datos, por defecto 3306
-)
+mysql = MySQL()
+
+app.config['MYSQL_HOST'] = os.getenv('MYSQLHOST', 'RAILWAY_PRIVATE_DOMAIN')
+app.config['MYSQL_USER'] = os.getenv('MYSQLUSER', 'root')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQLPASSWORD', 'WMMsvicfJAYUoModynwlhAgjtbWkOaKt')
+app.config['MYSQL_DB'] = os.getenv('MYSQLDATABASE', 'railway')
+app.config['MYSQL_PORT'] = int(os.getenv('MYSQLPORT', 3306))
+
+mysql.init_app(app)
